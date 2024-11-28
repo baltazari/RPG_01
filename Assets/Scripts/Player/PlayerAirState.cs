@@ -15,7 +15,7 @@ public class PlayerAirState : PlayerState
     override public void Update()
     {
         base.Update();
-        if (rb.velocity.y == 0)
+        if (player.IsGroundDetected())
         {
             stateMachine.ChangeState(player.idleState);
         }
