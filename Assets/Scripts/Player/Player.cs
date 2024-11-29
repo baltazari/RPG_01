@@ -14,8 +14,8 @@ public class Player : MonoBehaviour
     public float dashDuration = 0.2f;
     public float dashDir { get; private set; }
     public int dashCount = 2;
-    private float dashCooldown = 0.5f;
-    private float dashCooldownTimer;
+    public float dashCooldown = 5.0f;
+    public float dashCooldownTimer;
 
     [Header("Collision info")]
     [SerializeField] private Transform groundCheck;
@@ -98,16 +98,24 @@ public class Player : MonoBehaviour
     // Dash Input control
     public void DashInput()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.Joystick1Button15))
+        dashCooldownTimer -= Time.deltaTime;
+        if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.Joystick1Button15)) && dashCount > 0)
         {
+            --dashCount;
+            dashCooldownTimer = dashCooldown;
             dashDir = Input.GetAxisRaw("Horizontal");
             if (dashDir == 0)
             {
                 dashDir = faceDirection;
             }
 
-            dashCount--;
+
             stateMachine.ChangeState(dashState);
+        }
+        if (dashCooldownTimer < 0 && dashCount < 2)
+        {
+            dashCount++;
+            dashCooldownTimer = dashCooldown;
         }
     }
 }
