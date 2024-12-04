@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
     public PlayerIdleState idleState { get; private set; }
     public PlayerMoveState moveState { get; private set; }
     public PlayerJumpState jumpState { get; private set; }
+    public PlayerWallSlideState wallSlide { get; private set; }
     public PlayerAirState airState { get; private set; }
     public int faceDirection { get; private set; } = 1;
     public PlayerDashState dashState { get; private set; }
@@ -46,17 +47,21 @@ public class Player : MonoBehaviour
         jumpState = new PlayerJumpState(this, stateMachine, "Jump");
         airState = new PlayerAirState(this, stateMachine, "Jump");
         dashState = new PlayerDashState(this, stateMachine, "Dash");
+        wallSlide = new PlayerWallSlideState(this, stateMachine, "WallSlide");
     }
     private void Start()
     {
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         stateMachine.Initialize(idleState);
+
+
     }
     private void Update()
     {
         stateMachine.currentState.Update();
         DashInput();
+        Debug.Log(IsWallDetected());
 
     }
 
@@ -68,6 +73,7 @@ public class Player : MonoBehaviour
     }
 
     public bool IsGroundDetected() => Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, groundLayer);
+    public bool IsWallDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * faceDirection, wallCheckDistance, groundLayer);
 
     private void OnDrawGizmos()
     {
@@ -77,9 +83,11 @@ public class Player : MonoBehaviour
 
     private void Flip()
     {
+
         faceDirection *= -1;
         faceRight = !faceRight;
         transform.Rotate(0f, 180f, 0f);
+
     }
 
     //control character direction animation

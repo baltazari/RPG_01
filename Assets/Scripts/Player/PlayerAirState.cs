@@ -19,6 +19,22 @@ public class PlayerAirState : PlayerState
         {
             stateMachine.ChangeState(player.idleState);
         }
+
+        if (player.IsWallDetected())
+        {
+            while (player.IsWallDetected())
+            {
+
+                // player.transform.Rotate(0f, 180f, 0f);
+                stateMachine.ChangeState(player.wallSlide);
+            }
+
+        }
+
+        if (xInput != 0)
+        {
+            player.SetVelocity(player.moveSpeed * .8f * xInput, rb.velocity.y);
+        }
     }
     override public void Exit()
     {

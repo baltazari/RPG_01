@@ -14,6 +14,7 @@ public class PlayerMoveState : PlayerGroudedState
     override public void Update()
     {
         base.Update();
+        
 
         player.SetVelocity(xInput * player.moveSpeed, rb.velocity.y);
         if (xInput == 0)
