@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
     public PlayerAirState airState { get; private set; }
     public int faceDirection { get; private set; } = 1;
     public PlayerDashState dashState { get; private set; }
+    public PlayerAttack_01 playerAttack_01 { get; private set; }
     #endregion
     private void Awake()
     {
@@ -48,6 +49,7 @@ public class Player : MonoBehaviour
         airState = new PlayerAirState(this, stateMachine, "Jump");
         dashState = new PlayerDashState(this, stateMachine, "Dash");
         wallSlide = new PlayerWallSlideState(this, stateMachine, "WallSlide");
+        playerAttack_01 = new PlayerAttack_01(this, stateMachine, "Attack");
     }
     private void Start()
     {
@@ -65,6 +67,8 @@ public class Player : MonoBehaviour
 
     }
 
+    //End  Animation
+    public void EndAnimation() => stateMachine.currentState.AnimationFinishTrigger();
     public void SetVelocity(float _xVelocity, float _yVelocity)
     {
         rb.velocity = new Vector2(_xVelocity, _yVelocity);
@@ -126,4 +130,6 @@ public class Player : MonoBehaviour
             dashCooldownTimer = dashCooldown;
         }
     }
+
+
 }

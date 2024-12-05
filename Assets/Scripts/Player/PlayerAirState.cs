@@ -20,16 +20,13 @@ public class PlayerAirState : PlayerState
             stateMachine.ChangeState(player.idleState);
         }
 
-        if (player.IsWallDetected())
-        {
-            while (player.IsWallDetected())
-            {
+        // if (player.IsWallDetected())
+        // {
 
-                // player.transform.Rotate(0f, 180f, 0f);
-                stateMachine.ChangeState(player.wallSlide);
-            }
+        //     // player.transform.Rotate(0f, 180f, 0f);
+        //     stateMachine.ChangeState(player.wallSlide);
 
-        }
+        // }
 
         if (xInput != 0)
         {
