@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [Header("Attack Movement")]
+    public Vector2[] attackMovement;
+    public bool isBusy { get; private set; }
     [Header("Movement")]
     public float moveSpeed = 10f;
     public float jumpForce = 15f;
@@ -65,6 +68,7 @@ public class Player : MonoBehaviour
         DashInput();
         Debug.Log(IsWallDetected());
 
+
     }
 
     //End  Animation
@@ -76,6 +80,11 @@ public class Player : MonoBehaviour
 
     }
 
+    //Set velocity to zero
+    public void SetVelocityZero() => rb.velocity = new Vector2(0, 0);
+
+    #region Collision
+    //Recognize wall and ground
     public bool IsGroundDetected() => Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, groundLayer);
     public bool IsWallDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * faceDirection, wallCheckDistance, groundLayer);
 
@@ -85,6 +94,8 @@ public class Player : MonoBehaviour
         Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y));
     }
 
+    //end recognize wall and ground
+    #endregion
     private void Flip()
     {
 
@@ -129,6 +140,13 @@ public class Player : MonoBehaviour
             dashCount++;
             dashCooldownTimer = dashCooldown;
         }
+    }
+
+    public IEnumerator BusyFor(float _seconds)
+    {
+        isBusy = true;
+        yield return new WaitForSeconds(_seconds);
+        isBusy = false;
     }
 
 

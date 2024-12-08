@@ -12,11 +12,12 @@ public class PlayerIdleState : PlayerGroudedState
     override public void Enter()
     {
         base.Enter();
+        player.SetVelocityZero();
     }
     override public void Update()
     {
         base.Update();
-        if (xInput != 0)
+        if (xInput != 0 && !player.isBusy)
         {
             stateMachine.ChangeState(player.moveState);
         }
